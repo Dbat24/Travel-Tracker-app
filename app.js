@@ -5,14 +5,28 @@ import pg from "pg";
 const app = express();
 const port = 3000;
 
-const db = new pg.Client({
-  user: "postgres",
-  host: "localhost",
-  database: "planetC",
-  password: "Atanda@4eva",
-  port: 5432,
+// const db = new pg.Client({
+//   user: "postgres",
+//   host: "localhost",
+//   database: "planetC",
+//   password: "Atanda@4eva",
+//   port: 5432,
+// });
+// db.connect();
+
+const { Client } = require("pg");
+//
+const db = new Client({
+  connectionString:  process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,  // This ensures that the connection accepts Render’s SSL
+  },
 });
-db.connect();
+
+db.connect()
+  .then(() => console.log("Connected to Render PostgreSQL Database"))
+  .catch(err => console.error("Connection error", err.stack));
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
