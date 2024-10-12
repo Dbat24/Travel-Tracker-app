@@ -1,6 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
-import pg from "pg";
+import pkg from 'pg';
+import 'dotenv/config';
+
 
 const app = express();
 const port = 3000;
@@ -14,18 +16,18 @@ const port = 3000;
 // });
 // db.connect();
 
-const { Client } = require("pg");
-//
+const { Client } = pkg;
+
 const db = new Client({
-  connectionString:  process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false,  // This ensures that the connection accepts Render’s SSL
+    rejectUnauthorized: false, // This ensures that the connection accepts Render’s SSL
   },
 });
 
 db.connect()
   .then(() => console.log("Connected to Render PostgreSQL Database"))
-  .catch(err => console.error("Connection error", err.stack));
+  .catch((err) => console.error("Connection error", err.stack));
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
